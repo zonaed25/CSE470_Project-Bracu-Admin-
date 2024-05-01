@@ -9,81 +9,97 @@
         </ol>
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="https://images.unsplash.com/photo-1561877202-53d0e24be55d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80"
-                    class="d-block w-100" alt="...">
+                <img src="{{ asset('images/1.jpeg') }}"
+                    class="d-block w-100">
             </div>
             <div class="carousel-item">
-                <img src="https://images.unsplash.com/photo-1561622245-4d9cd72441a8?ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80"
-                    class="d-block w-100" alt="...">
+                <img src="{{ asset('images/2.jpeg') }}"
+                    class="d-block w-100">
             </div>
             <div class="carousel-item">
-                <img src="https://images.unsplash.com/photo-1508724735996-b41f69dfe2a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1156&q=80"
-                    class="d-block w-100" alt="...">
+                <img src="{{ asset('images/3.jpeg') }}"
+                    class="d-block w-100">
             </div>
         </div>
     </div>
 
-    <div class="faq mb-5">
-        <div class="container mt-4">
-            <h2>FAQ</h2>
-            <div class="accordion">
-                <div class="accordion-item">
-                    <button id="accordion-button-1" aria-expanded="false">
-                        <span class="accordion-title">Why is the moon sometimes out during the day?</span>
-                        <span class="icon" aria-hidden="true"></span>
-                    </button>
-                    <div class="accordion-content">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut.
-                            Ut tortor pretium viverra suspendisse potenti.
-                        </p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button id="accordion-button-2" aria-expanded="false">
-                        <span class="accordion-title">Why is the sky blue?</span>
-                        <span class="icon" aria-hidden="true"></span>
-                    </button>
-                    <div class="accordion-content">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut.
-                            Ut tortor pretium viverra suspendisse potenti.
-                        </p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button id="accordion-button-4" aria-expanded="false">
-                        <span class="accordion-title">How much does the Earth weigh?</span>
-                        <span class="icon" aria-hidden="true"></span>
-                    </button>
-                    <div class="accordion-content">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut.
-                            Ut tortor pretium viverra suspendisse potenti.
-                        </p>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <button id="accordion-button-5" aria-expanded="false">
-                        <span class="accordion-title">How do airplanes stay up?</span>
-                        <span class="icon" aria-hidden="true"></span>
-                    </button>
-                    <div class="accordion-content">
-                        <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut.
-                            Ut tortor pretium viverra suspendisse potenti.
-                        </p>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="row my-5">
+            <div class="col-6 text-right">
+                <img class="w-75" src="{{ asset('images/blogs/' . $blog->image) }}">
+            </div>
+            <div class="col-6">
+                <h2>{{ $blog->title }}</h2>
+                <p>{{ $blog->description }}</p>
+                <a href="{{ route('student.view-blog', $blog->id) }}" class="btn btn-sm btn-outline-secondary">View</a>
             </div>
         </div>
     </div>
+    
+    <div class="container my-5">
+        <div>
+            <h2 class="text-uppercase text-center clr pb-4">upcomming event</h2>
+            <div class="text-center">
+                <div class="w-75 m-auto calendar" id="calendar"></div>
+            </div>
+        </div>
+
+    </div>
+
+
     <div class="announcement bg-dark pt-2 pb-1 text-white">
-        <marquee direction="left">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Pariatur voluptatem facilis molestiae labore ipsum explicabo vitae reprehenderit aspernatur sequi maxime!</marquee>
+        <marquee direction="left">{{ $announcement->announcement }}</marquee>
     </div>
 </div>
+
+
+
+<!-- Messenger Chat Plugin Code -->
+<div id="fb-root"></div>
+
+<!-- Your Chat Plugin code -->
+<div id="fb-customer-chat" class="fb-customerchat">
+</div>
+
+<script>
+  var chatbox = document.getElementById('fb-customer-chat');
+  chatbox.setAttribute("page_id", "172726545927590");
+  chatbox.setAttribute("attribution", "biz_inbox");
+</script>
+
+<!-- Your SDK code -->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      xfbml            : true,
+      version          : 'v18.0'
+    });
+  };
+
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = 'https://connect.facebook.net/en_US/sdk/xfbml.customerchat.js';
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+</script>
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            events: {!! json_encode($events) !!},
+        });
+
+        calendar.render();
+    });
+</script>
+
+
+
 @endsection
